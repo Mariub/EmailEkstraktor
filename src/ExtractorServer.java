@@ -25,8 +25,9 @@ public class ExtractorServer {
         ) {
             String receivedString;
             System.out.println("Server started.");
+            Socket socket = null;
             while (true) {
-                Socket socket = serverSocket.accept();
+                socket = serverSocket.accept();
 
                 PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -61,21 +62,25 @@ public class ExtractorServer {
 
         @Override
         public void run() {
-            try  {
-                String receivedString;
-                System.out.println("Method run, waiting for connection...");
-                while (((receivedString = in.readLine()) != null)) {
 
-                    System.out.println("Client connected from: " + addr.getHostAddress() + " on port " + lclPort);
-                    System.out.println("Address given was: " + receivedString + " Ready to process...");
+                try {
+                    String receivedString;
+                    System.out.println("Method run, waiting for connection...");
+                    while (((receivedString = in.readLine()) != null)) {
 
-                    String output = processToReturn(receivedString);
-                    System.out.println("Sending to client: \n" + output);
-                    out.println(output);
+                        System.out.println("Client connected from: " + addr.getHostAddress() + " on port " + lclPort);
+                        System.out.println("Address given was: " + receivedString + " Ready to process...");
+
+                        String output = processToReturn(receivedString);
+                        System.out.println("Sending output to client.\n");
+                        out.println(output);
+                    }
+                  
+                } catch (IOException e) {
+                    out.println("Code 2: Website not a working address.");
+                    System.out.println("Error occured");
                 }
-            } catch (IOException e) {
-                System.out.println("Error occured");
-            }
+
         }
 
         public String processToReturn(String url) throws MalformedURLException {
