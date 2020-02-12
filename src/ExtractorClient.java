@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class ExtractorClient {
 
-    //client kode under
     public static void main(String[] args) throws IOException{
         String adr = "0";
         String host = "";
@@ -58,7 +57,6 @@ public class ExtractorClient {
             String input;
             while(true) {
                 while((input = in.readLine()) != null) {
-                    if(input.equals("]"))return;
                     System.out.println(input);
                 }
 
